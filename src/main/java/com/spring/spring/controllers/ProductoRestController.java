@@ -1,6 +1,8 @@
 package com.spring.spring.controllers;
 
+import com.spring.spring.dtos.CategoriaDTO;
 import com.spring.spring.dtos.ProductoDTO;
+import com.spring.spring.interfaces.CategoriaService;
 import com.spring.spring.interfaces.ProductoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,16 @@ public class ProductoRestController {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private CategoriaService categoriaService;
+
+
+    @GetMapping("/categoria/lista")
+    public List<CategoriaDTO> mostrarCategorias(){
+        return this.categoriaService.obtenerCategorias();
+    }
+
 
     @GetMapping("/lista")
     public List<ProductoDTO> mostrarLista() {

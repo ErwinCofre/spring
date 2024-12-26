@@ -1,5 +1,7 @@
 package com.spring.spring.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.spring.models.Categoria;
 import com.spring.spring.models.Producto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -12,11 +14,11 @@ public class ProductoDTO {
 
     private int id;
     @NotNull
-    @Size(min = 5,max = 50)
+    @Size(min = 5, max = 50)
     private String nombre;
 
     @NotNull
-    @Size(min = 5,max = 150)
+    @Size(min = 5, max = 150)
     private String descripcion;
 
     @NotNull
@@ -25,19 +27,28 @@ public class ProductoDTO {
 
     private boolean enStock;
 
+    private CategoriaDTO categoriaDTO;
+
     public ProductoDTO() {
 
     }
 
-    public ProductoDTO(Producto producto){
-        this.id=producto.getId();
-        this.nombre=producto.getNombre();
-        this.descripcion=producto.getDescripcion();
-        this.precio= producto.getPrecio();
-        this.enStock=producto.isEnStock();
-
+    public ProductoDTO(Producto producto) {
+        this.id = producto.getId();
+        this.nombre = producto.getNombre();
+        this.descripcion = producto.getDescripcion();
+        this.precio = producto.getPrecio();
+        this.enStock = producto.isEnStock();
+        this.categoriaDTO= producto.getCategoria()==null?null:new CategoriaDTO(producto.getCategoria());
     }
 
+    public CategoriaDTO getCategoria() {
+        return categoriaDTO;
+    }
+
+    public void setCategoria(CategoriaDTO categoriaDTO) {
+        this.categoriaDTO = categoriaDTO;
+    }
 
     public int getId() {
         return this.id;

@@ -19,6 +19,7 @@
 
             <th>Nombre</th>
             <th>Precio</th>
+            <th>Categoria</th>
             <th>Disponibilidad</th>
         </tr>
         </thead>
@@ -26,6 +27,12 @@
         <tr th:each="producto : ${productos}">
             <td th:text="${producto.nombre}"></td>
             <td th:text="${producto.precio}"></td>
+            <div th:if="${producto.getCategoria}">
+                <td th:text="${producto.getCategoria().getNombre}"></td>
+            </div>
+            <div th:unless="${producto.getCategoria}">
+                <td>Sin Categoria</td>
+            </div>
             <td >
                 <spam th:if="${producto.enStock}" style="color:green;"> Disponible</spam>
                 <spam th:unless="${producto.enStock}" style="color:red;"> Agotado</spam>

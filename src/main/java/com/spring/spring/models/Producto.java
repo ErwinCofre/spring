@@ -2,13 +2,11 @@ package com.spring.spring.models;
 
 import com.spring.spring.dtos.ProductoDTO;
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
 
 /***
  * Modelo que representa abstracción de un producto
  * @author erwin
  */
-
 @Entity
 @Table(name = "producto")
 public class Producto {
@@ -19,17 +17,23 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column( name = "nombre", nullable = false,length = 100)
+    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column( name = "descripcion", nullable = false,length = 100)
+    @Column(name = "descripcion", nullable = false, length = 100)
     private String descripcion;
 
-    @Column( name = "precio",nullable = false)
+    @Column(name = "precio", nullable = false)
     private double precio;
 
-    @Column( name = "enStock",nullable = false)
+    @Column(name = "enStock", nullable = false)
     private boolean enStock;
+
+    //donde tenga la FK en la tabla dejaré la anotacion ManyToOne
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
 
     public Producto() {
     }
@@ -41,12 +45,23 @@ public class Producto {
         this.precio = precio;
         this.enStock = enStock;
     }
-    public Producto(ProductoDTO productoDTO){
-        this.id=productoDTO.getId();
-        this.nombre=productoDTO.getNombre();
-        this.descripcion= productoDTO.getDescripcion();
-        this.precio=productoDTO.getPrecio();
-        this.enStock=productoDTO.isEnStock();
+
+    public Producto(ProductoDTO productoDTO) {
+        this.id = productoDTO.getId();
+        this.nombre = productoDTO.getNombre();
+        this.descripcion = productoDTO.getDescripcion();
+        this.precio = productoDTO.getPrecio();
+        this.enStock = productoDTO.isEnStock();
+        this.categoria = new Categoria(productoDTO.getCategoria());
+
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public int getId() {
@@ -68,6 +83,7 @@ public class Producto {
     public boolean isEnStock() {
         return this.enStock;
     }
+
 
     public void setId(int id) {
         this.id = id;
