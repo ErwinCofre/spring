@@ -7,7 +7,10 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+//CREATE TABLE categoria (
+//        id SERIAL PRIMARY KEY,
+//        nombre VARCHAR(100) UNIQUE NOT NULL
+//);
 
 @Entity
 @Table(name = "categoria")

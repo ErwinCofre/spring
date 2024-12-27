@@ -3,6 +3,14 @@ package com.spring.spring.models;
 import com.spring.spring.dtos.ProductoDTO;
 import jakarta.persistence.*;
 
+
+
+//
+//    ALTER TABLE producto
+//    ADD COLUMN categoria_id BIGINT,
+//    ADD CONSTRAINT fk_productos_categorias
+//    FOREIGN KEY (categoria_id)
+//    REFERENCES categoria(id);
 /***
  * Modelo que representa abstracción de un producto
  * @author erwin
