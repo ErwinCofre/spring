@@ -1,6 +1,7 @@
 package com.spring.spring.repositorios;
 
 import com.spring.spring.models.Producto;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,6 +9,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductoRepositoryJPA extends JpaRepository<Producto, Integer> {
+
+    @EntityGraph(attributePaths = {"categoria"})
+    @Override
+    List<Producto> findAll();
+
+
 
 //    //Metodos custom
     List<Producto> findByNombre(String nombre);
