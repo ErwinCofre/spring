@@ -2,6 +2,7 @@ package com.spring.spring.services;
 
 import com.spring.spring.dtos.CategoriaDTO;
 import com.spring.spring.interfaces.CategoriaService;
+import com.spring.spring.models.Categoria;
 import com.spring.spring.repositorios.CategoriaRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,9 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public List<CategoriaDTO> obtenerCategorias() {
-        return this.categoriaRepositoryJPA.findAll()
-                .stream()
-                .map(categoria -> new CategoriaDTO(categoria))
+        List<Categoria> categoriaList = this.categoriaRepositoryJPA.findAll();
+        return categoriaList.stream()
+                .map(categoria -> new CategoriaDTO(categoria,true))
                 .collect(Collectors.toList());
     }
 }

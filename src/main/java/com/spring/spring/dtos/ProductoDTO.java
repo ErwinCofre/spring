@@ -39,7 +39,18 @@ public class ProductoDTO {
         this.descripcion = producto.getDescripcion();
         this.precio = producto.getPrecio();
         this.enStock = producto.isEnStock();
-        this.categoriaDTO= producto.getCategoria()==null?null:new CategoriaDTO(producto.getCategoria());
+
+    }
+
+    public ProductoDTO(Producto producto, boolean include) {
+        this.id = producto.getId();
+        this.nombre = producto.getNombre();
+        this.descripcion = producto.getDescripcion();
+        this.precio = producto.getPrecio();
+        this.enStock = producto.isEnStock();
+        if (include) {
+            this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria(),false);
+        }
     }
 
     public CategoriaDTO getCategoria() {

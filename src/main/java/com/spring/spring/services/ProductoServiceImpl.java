@@ -32,7 +32,7 @@ public class ProductoServiceImpl implements ProductoService {
             throw new IllegalStateException("No se encontraron productos");
         }
         return productos.stream()
-                .map(producto -> new ProductoDTO(producto))
+                .map(producto -> new ProductoDTO(producto,true))
                 .collect(Collectors.toList());
     }
 

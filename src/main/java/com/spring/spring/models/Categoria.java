@@ -2,6 +2,7 @@ package com.spring.spring.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.spring.dtos.CategoriaDTO;
 import jakarta.persistence.*;
 
@@ -22,9 +23,10 @@ public class Categoria {
     private String nombre;
 
 
-    /// traer productos relacionados
-//    @OneToMany(mappedBy = "categoria")
-//    List<Producto> productoList;
+    //traer productos relacionados
+    @OneToMany(mappedBy = "categoria",fetch = FetchType.EAGER)
+    @JsonManagedReference
+    List<Producto> productoList;
 
 
     public Categoria() {
@@ -33,20 +35,20 @@ public class Categoria {
     public Categoria(CategoriaDTO categoriaDTO) {
         this.id = categoriaDTO.getId();
         this.nombre = categoriaDTO.getNombre();
-//        this.productoList = categoriaDTO.getProductoDTOList()
-//                .stream()
-//                .map(productoDTO -> new Producto(productoDTO))
-//                .collect(Collectors.toList());
+        this.productoList = categoriaDTO.getProductoDTOList()
+                .stream()
+                .map(productoDTO -> new Producto(productoDTO))
+                .collect(Collectors.toList());
     }
 
 
-//    public List<Producto> getProductoList() {
-//        return productoList;
-//    }
-//
-//    public void setProductoList(List<Producto> productoList) {
-//        this.productoList = productoList;
-//    }
+    public List<Producto> getProductoList() {
+        return productoList;
+    }
+
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
+    }
 
     public int getId() {
         return this.id;

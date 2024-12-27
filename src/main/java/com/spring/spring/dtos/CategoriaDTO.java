@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class CategoriaDTO {
     private int id;
     private String nombre;
-//  private List<ProductoDTO> productoDTOList;
+    private List<ProductoDTO> productoDTOList;
 
     public CategoriaDTO() {
     }
@@ -26,13 +26,25 @@ public class CategoriaDTO {
 
     }
 
-//    public List<ProductoDTO> getProductoDTOList() {
-//        return productoDTOList;
-//    }
-//
-//    public void setProductoDTOList(List<ProductoDTO> productoDTOList) {
-//        this.productoDTOList = productoDTOList;
-//    }
+    public CategoriaDTO(Categoria categoria, boolean include) {
+        this.id = categoria.getId();
+        this.nombre = categoria.getNombre();
+        if (include){
+            this.productoDTOList = categoria.getProductoList()
+                    .stream()
+                    .map(producto -> new ProductoDTO(producto,false))
+                    .collect(Collectors.toList());
+        }
+
+    }
+
+    public List<ProductoDTO> getProductoDTOList() {
+        return productoDTOList;
+    }
+
+    public void setProductoDTOList(List<ProductoDTO> productoDTOList) {
+        this.productoDTOList = productoDTOList;
+    }
 
     public int getId() {
         return this.id;

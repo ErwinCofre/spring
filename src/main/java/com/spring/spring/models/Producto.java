@@ -1,8 +1,8 @@
 package com.spring.spring.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spring.spring.dtos.ProductoDTO;
 import jakarta.persistence.*;
-
 
 
 //
@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 //    ADD CONSTRAINT fk_productos_categorias
 //    FOREIGN KEY (categoria_id)
 //    REFERENCES categoria(id);
+
 /***
  * Modelo que representa abstracción de un producto
  * @author erwin
@@ -38,8 +39,9 @@ public class Producto {
     private boolean enStock;
 
     //donde tenga la FK en la tabla dejaré la anotacion ManyToOne
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id")
+    @JsonBackReference
     private Categoria categoria;
 
 
