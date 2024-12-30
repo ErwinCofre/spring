@@ -3,6 +3,7 @@ package com.spring.spring.controllers;
 import com.spring.spring.dtos.ProductoDTO;
 import com.spring.spring.interfaces.ProductoService;
 import com.spring.spring.services.ProductoServiceImpl;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -84,9 +85,15 @@ public class ProductoController {
 
 
         } catch (IllegalStateException e) {
+            System.out.println(e);
             model.addAttribute("error", e.getMessage());
             return "formulario-producto";
-        } catch (Exception e) {
+        } catch (ConstraintViolationException e) {
+            model.addAttribute("error", e);
+            return "formulario-producto";
+        }
+        catch (Exception e) {
+            System.out.println(e);
             //Exception general sirve para todo tipo de errpr
             model.addAttribute("error", "Se genero un error");
             return "formulario-producto";

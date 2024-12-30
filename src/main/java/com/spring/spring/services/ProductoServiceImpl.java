@@ -7,19 +7,25 @@ import com.spring.spring.models.Producto;
 import com.spring.spring.repositorios.ProductoRepository;
 import com.spring.spring.repositorios.ProductoRepositoryJPA;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
 
-/*  integracion JDBC
+    /*  integracion JDBC
+        @Autowired
+        private ProductoRepository productoRepository;
+    */
     @Autowired
-    private ProductoRepository productoRepository;
-*/
+    private Validator validator;
 
     @Autowired
     private ProductoRepositoryJPA productoRepositoryJPA;
@@ -32,7 +38,7 @@ public class ProductoServiceImpl implements ProductoService {
             throw new IllegalStateException("No se encontraron productos");
         }
         return productos.stream()
-                .map(producto -> new ProductoDTO(producto,true))
+                .map(producto -> new ProductoDTO(producto, true))
                 .collect(Collectors.toList());
     }
 
@@ -52,9 +58,12 @@ public class ProductoServiceImpl implements ProductoService {
             throw new IllegalStateException("Nombre no puede estar duplicado");
         }
 
-
         nuevoProductoDTO.setEnStock(true);
-        this.productoRepositoryJPA.save(new Producto(nuevoProductoDTO));
+        Producto nuevoProducto = new Producto(nuevoProductoDTO);
+
+//        this.validarEntidad(nuevoProducto);
+
+        this.productoRepositoryJPA.save(nuevoProducto);
         return nuevoProductoDTO;
     }
 
@@ -63,5 +72,28 @@ public class ProductoServiceImpl implements ProductoService {
         return this.productoRepositoryJPA.findByNombre(nombre).stream()
                 .map(producto -> new ProductoDTO(producto))
                 .collect(Collectors.toList());
+    }
+
+    /***
+     * Metodo para validar validaciones por atributoen  paso de DTO a entidad
+     * @param producto
+     */
+    private void validarEntidad(Producto producto) {
+        Set<ConstraintViolation<Producto>> validacion = validator.validate(producto);
+        if (!validacion.isEmpty()) {
+            throw new ConstraintViolationException(validacion);
+        }
+    }
+    // spring.jpa.properties.javax.persistence.validation.mode=callback
+
+    /***
+     * Metodo para validar validaciones por atributoen  paso de Entidad a DTO
+     * @param productoDTO
+     */
+    private void validarDTO(ProductoDTO productoDTO) {
+        Set<ConstraintViolation<ProductoDTO>> validacion = validator.validate(productoDTO);
+        if (!validacion.isEmpty()) {
+            throw new ConstraintViolationException(validacion);
+        }
     }
 }

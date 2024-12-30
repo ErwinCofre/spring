@@ -1,8 +1,8 @@
 package com.spring.spring.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.spring.spring.models.Categoria;
+
 import com.spring.spring.models.Producto;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -13,12 +13,14 @@ public class ProductoDTO {
 
 
     private int id;
-    @NotNull
-    @Size(min = 5, max = 50)
+
+    @NotNull(message = "nombre no puede ser null")
+    @Size(min = 5, max = 50, message = "largo de nombre debe estar entre 5 y 50")
+    @NotBlank(message = "Nombre no puede estar en blanco")
     private String nombre;
 
     @NotNull
-    @Size(min = 5, max = 150)
+    @Size(min = 5, max = 250)
     private String descripcion;
 
     @NotNull
@@ -27,7 +29,7 @@ public class ProductoDTO {
 
     private boolean enStock;
 
-    private CategoriaDTO categoriaDTO;
+//    private CategoriaDTO categoriaDTO;
 
     public ProductoDTO() {
 
@@ -48,18 +50,18 @@ public class ProductoDTO {
         this.descripcion = producto.getDescripcion();
         this.precio = producto.getPrecio();
         this.enStock = producto.isEnStock();
-        if (include) {
-            this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria(),false);
-        }
+//        if (include) {
+//            this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria(), false);
+//        }
     }
 
-    public CategoriaDTO getCategoria() {
-        return categoriaDTO;
-    }
-
-    public void setCategoria(CategoriaDTO categoriaDTO) {
-        this.categoriaDTO = categoriaDTO;
-    }
+//    public CategoriaDTO getCategoria() {
+//        return categoriaDTO;
+//    }
+//
+//    public void setCategoria(CategoriaDTO categoriaDTO) {
+//        this.categoriaDTO = categoriaDTO;
+//    }
 
     public int getId() {
         return this.id;

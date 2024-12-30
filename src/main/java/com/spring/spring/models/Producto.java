@@ -3,6 +3,9 @@ package com.spring.spring.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spring.spring.dtos.ProductoDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 
 //
@@ -27,6 +30,9 @@ public class Producto {
     private int id;
 
     @Column(name = "nombre", nullable = false, length = 100)
+    @NotNull(message = "nombre no puede ser null")
+    @Size(min = 5, max = 25, message = "largo de nombre debe estar entre 5 y 25")
+    @NotBlank(message = "Nombre no puede estar en blanco")
     private String nombre;
 
     @Column(name = "descripcion", nullable = false, length = 100)
@@ -62,7 +68,7 @@ public class Producto {
         this.descripcion = productoDTO.getDescripcion();
         this.precio = productoDTO.getPrecio();
         this.enStock = productoDTO.isEnStock();
-        this.categoria = new Categoria(productoDTO.getCategoria());
+        this.categoria = new Categoria();
 
     }
 
