@@ -1,15 +1,19 @@
 package com.spring.spring.config;
 
 import com.spring.spring.services.UsuarioLoginService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+@EnableMethodSecurity // Habilita el uso de anotaciones para seguridad
 @Configuration
 public class SecurityConfig {
 
@@ -17,11 +21,6 @@ public class SecurityConfig {
 
     public SecurityConfig(UsuarioLoginService usuarioLoginService) {
         this.usuarioLoginService = usuarioLoginService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 
@@ -53,6 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/rest/**").permitAll()//a estas rutas se puede acceder sin auth- rutas publicas
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()//todas las demas rutas necesitan auth - rutas privadas
                 )
                 .formLogin(form ->
@@ -67,6 +67,9 @@ public class SecurityConfig {
                                 .logoutUrl("/logout")//ruta de logout
                                 .logoutSuccessUrl("/login?logout")//ruta cuando el logout esta hecho
 
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/access-denied")
                 );
         return http.build();
 

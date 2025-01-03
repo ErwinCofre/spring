@@ -1,22 +1,23 @@
 package com.spring.spring;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.spring.spring.dtos.UsuarioLoginDTO;
+import com.spring.spring.services.UsuarioLoginService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/primero")
+@Controller
+@RequestMapping
 public class PrimerControlador {
 
-    @GetMapping("/mensaje")
-    public String getMensaje(){
-        return "Este es mi primer EndPoint";
-    }
 
-    @GetMapping("/contacto")
-    public String getContacto(){
-        return "Este es mi contacto";
+
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "access-denied"; // Vista para acceso denegado
     }
 
 

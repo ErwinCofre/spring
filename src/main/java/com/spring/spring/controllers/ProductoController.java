@@ -7,6 +7,8 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,6 +57,10 @@ public class ProductoController {
      * @param model
      * @return retornamos el dto a usar en formulario, template del formulario
      */
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    // @Secured({"ADMIN"})
     @GetMapping("/formulario")
     public String formulario(Model model) {
         model.addAttribute("productoDTO", new ProductoDTO());
@@ -91,8 +97,7 @@ public class ProductoController {
         } catch (ConstraintViolationException e) {
             model.addAttribute("error", e);
             return "formulario-producto";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             //Exception general sirve para todo tipo de errpr
             model.addAttribute("error", "Se genero un error");
