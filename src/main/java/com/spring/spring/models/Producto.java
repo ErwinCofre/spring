@@ -68,7 +68,7 @@ public class Producto {
         this.descripcion = productoDTO.getDescripcion();
         this.precio = productoDTO.getPrecio();
         this.enStock = productoDTO.isEnStock();
-        this.categoria = new Categoria();
+        this.categoria = new Categoria(productoDTO.getCategoria());
 
     }
 

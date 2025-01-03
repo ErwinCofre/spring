@@ -29,7 +29,7 @@ public class ProductoDTO {
 
     private boolean enStock;
 
-//    private CategoriaDTO categoriaDTO;
+    private CategoriaDTO categoriaDTO;
 
     public ProductoDTO() {
 
@@ -50,18 +50,18 @@ public class ProductoDTO {
         this.descripcion = producto.getDescripcion();
         this.precio = producto.getPrecio();
         this.enStock = producto.isEnStock();
-//        if (include) {
-//            this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria(), false);
-//        }
+        if (include) {
+            this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria(), false);
+        }
     }
 
-//    public CategoriaDTO getCategoria() {
-//        return categoriaDTO;
-//    }
-//
-//    public void setCategoria(CategoriaDTO categoriaDTO) {
-//        this.categoriaDTO = categoriaDTO;
-//    }
+    public CategoriaDTO getCategoria() {
+        return categoriaDTO;
+    }
+
+    public void setCategoria(CategoriaDTO categoriaDTO) {
+        this.categoriaDTO = categoriaDTO;
+    }
 
     public int getId() {
         return this.id;
