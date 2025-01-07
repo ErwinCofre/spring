@@ -39,7 +39,7 @@ public class ProductoRestController {
 
 
     @GetMapping("/lista")
-    public ResponseEntity mostrarLista() {
+    public ResponseEntity<?> mostrarLista() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(
                     Map.of(
@@ -67,7 +67,7 @@ public class ProductoRestController {
 
 
     @PostMapping("/guardar")
-    public ResponseEntity guardarProducto(@RequestBody ProductoDTO productoDTO) {
+    public ResponseEntity<?> guardarProducto(@RequestBody ProductoDTO productoDTO) {
 
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.productoService.guardarProducto(productoDTO));
