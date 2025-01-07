@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,16 +36,16 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public List<ProductoDTO> obtenerProductos() {
 
-        Object principal=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        User userAuth= (User) principal;
-        System.out.println("Usuario que esta en sesion");
-        System.out.println(userAuth.getUsername());
+//        Object principal=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        User userAuth= (User) principal;
+//        System.out.println("Usuario que esta en sesion");
+//        System.out.println(userAuth.getUsername());
 
         List<Producto> productos = this.productoRepositoryJPA.findAll();
 
         if (productos.isEmpty()) {
-            throw new IllegalStateException("No se encontraron productos");
+            throw new NoSuchElementException("No se encontraron productos");
         }
         return productos.stream()
                 .map(producto -> new ProductoDTO(producto, true))
