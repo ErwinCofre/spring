@@ -5,11 +5,13 @@ import com.spring.spring.dtos.ProductoDTO;
 import com.spring.spring.dtos.UsuarioLoginDTO;
 import com.spring.spring.interfaces.CategoriaService;
 import com.spring.spring.interfaces.ProductoService;
+import com.spring.spring.jwt.JwtTokenService;
 import com.spring.spring.services.UsuarioLoginService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +33,9 @@ public class ProductoRestController {
 
     @Autowired
     private UsuarioLoginService usuarioLoginService;
+
+    @Autowired
+    private JwtTokenService jwtTokenService;
 
     @GetMapping("/categoria/lista")
     public List<CategoriaDTO> mostrarCategorias() {

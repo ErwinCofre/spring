@@ -9,15 +9,23 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import com.spring.spring.filters.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
+
 
 @EnableMethodSecurity // Habilita el uso de anotaciones para seguridad
 @Configuration
 public class SecurityConfig {
 
     private final UsuarioLoginService usuarioLoginService;
+
+    @Value("${jwt.secret}")
+    private String jwtKey;
 
     public SecurityConfig(UsuarioLoginService usuarioLoginService) {
         this.usuarioLoginService = usuarioLoginService;
@@ -45,32 +53,32 @@ public class SecurityConfig {
     //va a generar la reglas  de seguridad
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,AuthenticationManager authenticationManager) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers("/rest/**").permitAll()//a estas rutas se puede acceder sin auth- rutas publicas
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()//todas las demas rutas necesitan auth - rutas privadas
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/rest/**").authenticated()
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().permitAll()
                 )
-                .formLogin(form ->
-
-                        form
-                                .defaultSuccessUrl("/producto/lista", true)//cuando se hace el login nos envia a esta rutta
-                                .permitAll()//quienes-TODOS
-
+                //quitamos sesion y login de springSecurity
+                .sessionManagement(sessionManagement ->
+                        sessionManagement
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/logout")//ruta de logout
-                                .logoutSuccessUrl("/login?logout")//ruta cuando el logout esta hecho
-
-                )
-                .exceptionHandling(ex -> ex
-                        .accessDeniedPage("/access-denied")
-                );
+//                .formLogin(form -> form
+//                        .defaultSuccessUrl("/producto/lista", true)
+//                        .permitAll()
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout")
+//                )
+//                .exceptionHandling(ex -> ex
+//                        .accessDeniedPage("/access-denied")
+//                )
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager, jwtKey), BasicAuthenticationFilter.class);
         return http.build();
 
 

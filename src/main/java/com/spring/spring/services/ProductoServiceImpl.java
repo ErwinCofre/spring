@@ -11,6 +11,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class ProductoServiceImpl implements ProductoService {
 //        User userAuth= (User) principal;
 //        System.out.println("Usuario que esta en sesion");
 //        System.out.println(userAuth.getUsername());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getName());
 
         List<Producto> productos = this.productoRepositoryJPA.findAll();
 
